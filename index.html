@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Small prints for a hard routine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,30..100&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:        #FBF7F2;
+    --cream-deep:   #F2E9DE;
+    --sand:         #EFE0CB;
+    --pink-soft:    #E5B3C2;
+    --pink-light:   #F5DCE4;
+    --mulberry:     #9C5F73;
+    --plum:         #5C2E3C;
+    --ink:          #261A1F;
+    --muted:        #786166;
+    --rule:         #E0CFC2;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Sora', sans-serif;
+    font-weight: 300;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Background grain texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.15  0 0 0 0 0.1  0 0 0 0 0.12  0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 380;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  h1 { font-variation-settings: "opsz" 144, "SOFT" 80; }
+  h2 { font-variation-settings: "opsz" 96, "SOFT" 60; }
+
+  em, i { font-family: 'Fraunces', serif; font-style: italic; font-weight: 360; }
+
+  /* ============ NAV ============ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    padding: 1.4rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.4s ease, padding 0.4s ease, border 0.4s ease;
+    border-bottom: 1px solid transparent;
+  }
+  nav.scrolled {
+    background: rgba(251, 247, 242, 0.85);
+    backdrop-filter: blur(12px);
+    padding: 0.9rem 3rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  nav .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 380;
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  nav .brand span { color: var(--mulberry); font-style: italic; }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+  nav a:hover { color: var(--mulberry); }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--mulberry);
+    transition: width 0.3s ease;
+  }
+  nav a:hover::after { width: 100%; }
+
+  @media (max-width: 768px) {
+    nav, nav.scrolled { padding: 1rem 1.4rem; }
+    nav ul { display: none; }
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    padding: 8rem 4rem 4rem;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-text { max-width: 640px; }
+  .hero .eyebrow {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--mulberry);
+    font-weight: 500;
+    margin-bottom: 1.6rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.2s forwards;
+  }
+  .hero h1 {
+    font-size: clamp(2.8rem, 7vw, 5.6rem);
+    margin-bottom: 1.6rem;
+    opacity: 0;
+    animation: fadeUp 1.1s 0.4s forwards;
+  }
+  .hero h1 .pink { color: var(--mulberry); font-style: italic; }
+  .hero p.lede {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 1.1s 0.7s forwards;
+  }
+  .hero .meta {
+    display: flex;
+    gap: 2.5rem;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp 1.1s 1s forwards;
+  }
+  .hero .meta strong {
+    display: block;
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-weight: 380;
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: -0.01em;
+    font-size: 1.4rem;
+    margin-bottom: 0.2rem;
+  }
+  .hero-visual {
+    position: relative;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-visual svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 7rem 1.8rem 3rem;
+      gap: 2rem;
+    }
+    .hero-visual { height: 55vh; }
+  }
+
+  /* ============ SECTIONS ============ */
+  section {
+    position: relative;
+    z-index: 2;
+    padding: 7rem 4rem;
+  }
+  @media (max-width: 900px) {
+    section { padding: 4rem 1.8rem; }
+  }
+
+  .section-eyebrow {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--mulberry);
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+  }
+  .section-eyebrow .num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 360;
+    font-size: 1.1rem;
+    margin-right: 0.7rem;
+    color: var(--plum);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* ============ STORY ============ */
+  .story {
+    background: var(--cream-deep);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .story-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .story h2 {
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    color: var(--plum);
+  }
+  .story-text p {
+    font-family: 'Fraunces', serif;
+    font-weight: 320;
+    font-size: 1.18rem;
+    line-height: 1.65;
+    color: var(--ink);
+    margin-bottom: 1.4rem;
+  }
+  .story-text p:first-of-type::first-letter {
+    font-family: 'Fraunces', serif;
+    font-weight: 380;
+    font-size: 3.6rem;
+    line-height: 0.9;
+    float: left;
+    color: var(--mulberry);
+    padding: 0.3rem 0.7rem 0 0;
+    font-style: italic;
+  }
+  @media (max-width: 900px) {
+    .story-inner { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  /* ============ ITEM SECTIONS ============ */
+  .item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .item.reverse { direction: rtl; }
+  .item.reverse > * { direction: ltr; }
+
+  .item-visual {
+    position: relative;
+    aspect-ratio: 1 / 1.05;
+    background: radial-gradient(circle at 50% 45%, var(--pink-light) 0%, transparent 65%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .item-visual svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .item h2 {
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    margin-bottom: 1.8rem;
+    color: var(--ink);
+  }
+  .item h2 .accent { color: var(--mulberry); font-style: italic; }
+  .item p.lede {
+    font-family: 'Fraunces', serif;
+    font-weight: 320;
+    font-size: 1.25rem;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 1.8rem;
+  }
+  .item p.body {
+    color: var(--muted);
+    font-size: 1.02rem;
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 1.6rem;
+  }
+
+  .pull {
+    margin-top: 2.4rem;
+    padding-left: 1.6rem;
+    border-left: 2px solid var(--mulberry);
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--plum);
+    max-width: 460px;
+  }
+  .pull .label {
+    display: block;
+    font-style: normal;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mulberry);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .item-alt {
+    background: var(--cream);
+    border-top: 1px solid var(--rule);
+  }
+  .item-alt-bg {
+    background: var(--cream-deep);
+    border-top: 1px solid var(--rule);
+  }
+
+  @media (max-width: 900px) {
+    .item, .item.reverse {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      direction: ltr;
+    }
+    .item-visual { max-width: 340px; margin: 0 auto; }
+  }
+
+  /* ============ CODA / CLOSING ============ */
+  .coda {
+    text-align: center;
+    padding: 8rem 2rem;
+    background: var(--plum);
+    color: var(--cream);
+    position: relative;
+  }
+  .coda h2 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    color: var(--cream);
+    margin-bottom: 1.8rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .coda h2 em { color: var(--pink-soft); }
+  .coda p {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 1.15rem;
+    max-width: 580px;
+    margin: 0 auto;
+    color: #E8D8DC;
+    line-height: 1.65;
+  }
+  .coda .sig {
+    margin-top: 3rem;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--pink-soft);
+    font-size: 1.05rem;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--ink);
+    color: var(--cream-deep);
+    padding: 2.4rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+  }
+  footer .left { color: var(--muted); }
+  footer .right em { color: var(--pink-soft); font-style: italic; }
+  @media (max-width: 600px) {
+    footer { flex-direction: column; gap: 0.6rem; text-align: center; padding: 2rem 1.4rem; }
+  }
+
+  /* ============ SCROLL-TRIGGERED ANIMATIONS ============ */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s cubic-bezier(.2,.7,.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.12s; }
+  .reveal-delay-2 { transition-delay: 0.24s; }
+  .reveal-delay-3 { transition-delay: 0.36s; }
+
+  /* ============ SVG ANIMATIONS ============ */
+  /* S-hook drawing in */
+  .hook-stroke {
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    transition: stroke-dashoffset 2.2s cubic-bezier(.4,.1,.3,1);
+  }
+  .svg-animate.visible .hook-stroke { stroke-dashoffset: 0; }
+
+  /* Bag swinging on hook: pivot at top-center of bag (the attachment point) */
+  .bag-group {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: 50% 0%;
+    animation: none;
+  }
+  .svg-animate.visible .bag-group {
+    opacity: 1;
+    animation: swing 4.2s ease-in-out 2.4s infinite;
+  }
+  @keyframes swing {
+    0%, 100% { transform: rotate(-3deg); }
+    50%      { transform: rotate(3deg); }
+  }
+
+  /* Stand drawing in + ampule descending (ping-pong loop) */
+  .stand-fill { opacity: 0; transition: opacity 1s ease 0.2s; }
+  .stand-fill.visible { opacity: 1; }
+
+  @keyframes descendAndReturn {
+    0%   { transform: translateY(-180px); opacity: 0; }
+    10%  { opacity: 1; }
+    38%  { transform: translateY(0); opacity: 1; }
+    62%  { transform: translateY(0); opacity: 1; }    /* hold settled */
+    90%  { opacity: 1; }
+    100% { transform: translateY(-180px); opacity: 0; }
+  }
+  .desc-ampule {
+    transform: translateY(-180px);
+    opacity: 0;
+  }
+  .svg-animate.visible .desc-ampule {
+    animation: descendAndReturn 5.5s cubic-bezier(.5,0,.3,1.1) 0.6s infinite;
+  }
+
+  /* Practice ampule snapping (ping-pong loop) */
+  .amp-body { opacity: 0; transition: opacity 0.9s 0.2s; }
+  .svg-animate.visible .amp-body { opacity: 1; }
+
+  @keyframes snapAndReturn {
+    0%, 28%   { transform: translate(0, 0) rotate(0deg); }              /* hold intact */
+    34%       { transform: translate(22px, -10px) rotate(52deg); }      /* SNAP (sharp) */
+    62%       { transform: translate(22px, -10px) rotate(52deg); }      /* hold broken */
+    82%, 100% { transform: translate(0, 0) rotate(0deg); }              /* return + hold */
+  }
+  .amp-top {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+  }
+  .svg-animate.visible .amp-top {
+    animation: snapAndReturn 5.5s ease-in-out 0.8s infinite;
+  }
+
+  @keyframes snapLineCycle {
+    0%, 22%   { stroke-dashoffset: 60; }     /* line hidden */
+    28%       { stroke-dashoffset: 0; }       /* line appears just before snap */
+    66%       { stroke-dashoffset: 0; }       /* line stays during break */
+    78%, 100% { stroke-dashoffset: 60; }     /* line fades back out */
+  }
+  .snap-line {
+    stroke-dasharray: 60;
+    stroke-dashoffset: 60;
+  }
+  .svg-animate.visible .snap-line {
+    animation: snapLineCycle 5.5s ease-in-out 0.8s infinite;
+  }
+
+  /* Decorative tick marks */
+  .tick {
+    stroke: var(--mulberry);
+    stroke-width: 1.2;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .svg-animate.visible .tick { opacity: 0.5; }
+
+  /* Section ornaments */
+  .ornament {
+    display: block;
+    margin: 0 0 1.5rem;
+    color: var(--mulberry);
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#top" class="brand">Three small <span>prints</span></a>
+  <ul>
+    <li><a href="#story">The story</a></li>
+    <li><a href="#hook">The aids</a></li>
+    <li><a href="#use">On use</a></li>
+  </ul>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-text">
+    <div class="eyebrow">A note from a parent · TPN at home</div>
+    <h1>Small prints for <span class="pink">a hard routine.</span></h1>
+    <p class="lede">Three small prints for the bits of TPN-at-home that nobody warns you about. Our nurse now sends them home with new families.</p>
+    <div class="meta">
+      <div><strong>3</strong>aids</div>
+      <div><strong>PLA</strong>filament</div>
+      <div><strong>Free</strong>to keep</div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <svg class="svg-animate" id="hero-svg" viewBox="-150 -200 300 400">
+      <!-- Wardrobe rail - thin, refined, sitting at the top of the loop interior -->
+      <line x1="-128" y1="-157" x2="128" y2="-157" stroke="#8A7B6E" stroke-width="5" stroke-linecap="round"/>
+      <line x1="-125" y1="-158.5" x2="125" y2="-158.5" stroke="#CBBEB0" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
+      <text x="-128" y="-180" font-family="Sora" font-size="9" fill="#786166" letter-spacing="2">WARDROBE RAIL</text>
+
+      <!-- S-hook: outline (darker) -->
+      <path class="hook-stroke"
+        d="M 35.4 -160.4 A 50 50 0 1 0 35.4 -89.6 L -35.4 -39.6 A 50 50 0 1 1 -35.4 31.4"
+        stroke="#9C5F73" stroke-width="32" fill="none"
+        stroke-linecap="round" stroke-linejoin="round" />
+      <!-- S-hook: inner fill -->
+      <path class="hook-stroke"
+        d="M 35.4 -160.4 A 50 50 0 1 0 35.4 -89.6 L -35.4 -39.6 A 50 50 0 1 1 -35.4 31.4"
+        stroke="#E5B3C2" stroke-width="20" fill="none"
+        stroke-linecap="round" stroke-linejoin="round"
+        style="transition-delay: 0.2s;" />
+
+      <!-- Hanging bag group: drawn at absolute viewBox coords so CSS transform works -->
+      <g class="bag-group">
+        <line x1="-35.4" y1="31.4" x2="-35.4" y2="81.4" stroke="#9C5F73" stroke-width="2" />
+        <rect x="-70.4" y="81.4" width="70" height="92" rx="6"
+              fill="#FAF6F1" stroke="#9C5F73" stroke-width="2"/>
+        <rect x="-65.4" y="93.4" width="60" height="62" rx="2"
+              fill="#E5B3C2" opacity="0.5"/>
+        <line x1="-65.4" y1="109.4" x2="-5.4" y2="109.4" stroke="#9C5F73" stroke-width="0.6" opacity="0.5"/>
+        <line x1="-65.4" y1="123.4" x2="-5.4" y2="123.4" stroke="#9C5F73" stroke-width="0.6" opacity="0.5"/>
+        <line x1="-65.4" y1="137.4" x2="-5.4" y2="137.4" stroke="#9C5F73" stroke-width="0.6" opacity="0.5"/>
+        <text x="-35.4" y="191" text-anchor="middle" font-family="Sora" font-size="9" fill="#786166" letter-spacing="2">TPN</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ STORY ============ -->
+<section class="story" id="story">
+  <div class="story-inner">
+    <div class="reveal">
+      <div class="section-eyebrow"><span class="num">i.</span> The origin</div>
+      <h2>Out of a small drawer of trial and error.</h2>
+      <svg class="ornament" width="48" height="14" viewBox="0 0 48 14" fill="none" style="margin-top: 1.5rem;">
+        <path d="M 1 7 L 16 7 M 32 7 L 47 7 M 21 7 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="story-text reveal reveal-delay-1">
+      <p>Our twins were born at twenty-four weeks. One of them, Eloise, got quite sick in NICU and lost a large length of her bowel to resection. She came home a long time later with short gut syndrome, a central venous access device for nightly TPN, and a PEG tube for overnight Pepti Junior feeds. The routine settles you in fast.</p>
+      <p>None of the prints on this page are clever, and they were not designed to be. They are the small fixes I made for the parts of the setup that kept catching me out. The hook because there was nowhere safe to hang the bag in the bedroom. The stand because ampules roll, and my eyesight has never been the kind that finds tiny things at 2am. The practice ampule because I cracked the first real one with too much enthusiasm, and the cut on my thumb spent the next fortnight reminding me about it.</p>
+      <p>Our TPN nurse now hands a small set to families being discharged. If you have ended up with one, this page is what each piece is for, and why I bothered.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ITEM 1: HOOK ============ -->
+<section id="hook" class="item-alt">
+  <div class="item reverse">
+    <div class="item-visual reveal">
+      <svg class="svg-animate" viewBox="-150 -205 300 385" id="hook-svg">
+        <!-- Wardrobe rail - thin, refined, sitting at the top of the loop interior -->
+        <line x1="-128" y1="-147" x2="128" y2="-147" stroke="#8A7B6E" stroke-width="5" stroke-linecap="round"/>
+        <line x1="-125" y1="-148.5" x2="125" y2="-148.5" stroke="#CBBEB0" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
+
+        <!-- Outline + fill of hook -->
+        <path class="hook-stroke"
+          d="M 35.4 -150.4 A 50 50 0 1 0 35.4 -79.6 L -35.4 -29.6 A 50 50 0 1 1 -35.4 41.4"
+          stroke="#9C5F73" stroke-width="30" fill="none"
+          stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="hook-stroke"
+          d="M 35.4 -150.4 A 50 50 0 1 0 35.4 -79.6 L -35.4 -29.6 A 50 50 0 1 1 -35.4 41.4"
+          stroke="#E5B3C2" stroke-width="18" fill="none"
+          stroke-linecap="round" stroke-linejoin="round"
+          style="transition-delay: 0.2s;"/>
+
+        <!-- Bag hanging from bottom loop - swings with the hook -->
+        <g class="bag-group">
+          <line x1="-35.4" y1="41.4" x2="-35.4" y2="78" stroke="#9C5F73" stroke-width="2"/>
+          <rect x="-65" y="78" width="60" height="78" rx="5" fill="#FAF6F1" stroke="#9C5F73" stroke-width="2"/>
+          <rect x="-60" y="90" width="50" height="52" rx="2" fill="#E5B3C2" opacity="0.45"/>
+          <text x="-35" y="172" text-anchor="middle" font-family="Sora" font-size="9" fill="#786166" letter-spacing="2">TPN</text>
+        </g>
+
+        <!-- Wardrobe rail label (kept outside bag-group so it doesn't swing) -->
+        <text x="-128" y="-170" font-family="Sora" font-size="9" fill="#786166" letter-spacing="2">WARDROBE RAIL</text>
+      </svg>
+    </div>
+    <div>
+      <div class="section-eyebrow reveal"><span class="num">no. 1</span> · The Hook</div>
+      <h2 class="reveal reveal-delay-1">The <span class="accent">S-hook</span> for the bag.</h2>
+      <p class="lede reveal reveal-delay-2">An S-shape that hangs the bag off a wardrobe rail. Top loop on the rail, bottom loop on the bag handle. That is the whole idea.</p>
+      <p class="body reveal reveal-delay-3">Keeps the bag off radiators, windowsills, and anything else you would rather not store a litre of liquid nutrition on top of. Useful between fridge storage and hang time, and a tidy spot to park the bag while you set up the rest.</p>
+      <div class="pull reveal reveal-delay-3">
+        <span class="label">On use</span>
+        Slide the rail through the top opening rather than trying to clip it on. Once it is on, it stays put even if the bag does a small impression of a pendulum.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ITEM 2: STAND ============ -->
+<section class="item-alt-bg">
+  <div class="item">
+    <div class="item-visual reveal">
+      <svg class="svg-animate" viewBox="-160 -180 320 360" id="stand-svg">
+        <!-- Bench line -->
+        <line x1="-150" y1="100" x2="150" y2="100" stroke="#B9A89D" stroke-width="1" opacity="0.5"/>
+
+        <!-- Descending ampule: drawn FIRST so the dome covers its lower portion (looks like it sinks in) -->
+        <g class="desc-ampule">
+          <path d="M -5 -95 L 5 -95 L 5 -80 L 5 -78 L 3 -74 L 3 -70 L 14 -58 L 14 5 L 12 8 L -12 8 L -14 5 L -14 -58 L -3 -70 L -3 -74 L -5 -78 L -5 -80 Z"
+            fill="#F5DCE4" stroke="#9C5F73" stroke-width="1.8" stroke-linejoin="round"/>
+          <!-- Snap line at the neck constriction -->
+          <line x1="-7" y1="-76" x2="7" y2="-76" stroke="#9C5F73" stroke-width="0.8" stroke-dasharray="2 2"/>
+        </g>
+
+        <!-- Stand body: wide dome silhouette with a smooth curved top -->
+        <path class="stand-fill"
+          d="M -130 100 L -130 95 L -120 82 L -100 60 L -75 38 L -45 20 L -22 8 C -22 -25 22 -25 22 8 L 45 20 L 75 38 L 100 60 L 120 82 L 130 95 L 130 100 Z"
+          fill="#E5B3C2" stroke="#9C5F73" stroke-width="2.5" stroke-linejoin="round"/>
+
+        <!-- Tick marks for stability -->
+        <line class="tick" x1="-130" y1="106" x2="-130" y2="118"/>
+        <line class="tick" x1="130" y1="106" x2="130" y2="118"/>
+        <line class="tick" x1="-130" y1="112" x2="130" y2="112" stroke-dasharray="3 4"/>
+        <text class="tick" x="0" y="128" text-anchor="middle" font-family="Sora" font-size="9" fill="#786166" letter-spacing="1" stroke="none" style="opacity: 0;">WEIGHTED BASE</text>
+      </svg>
+    </div>
+    <div>
+      <div class="section-eyebrow reveal"><span class="num">no. 2</span> · The Stand</div>
+      <h2 class="reveal reveal-delay-1">A <span class="accent">weighted base</span> for the ampule.</h2>
+      <p class="lede reveal reveal-delay-2">A wide dome with a hole in the top, sized for a glass ampule or a turalock cap. The wide bottom is the whole point. It does not tip over on you.</p>
+      <p class="body reveal reveal-delay-3">Helpful at 2am, with bad lighting, with eyesight that has seen better decades, or any time you have watched an ampule roll quietly across the bench and silently judged the design choices of glass cylinders. Holds the thing firmly enough that you can use both hands on the syringe instead of one to stop the ampule moving.</p>
+      <div class="pull reveal reveal-delay-3">
+        <span class="label">On use</span>
+        Slide the ampule into the centre hole until it sits snug. If the stand moves when you press the syringe in, something has gone wrong, or the cat is involved.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ITEM 3: PRACTICE AMPULE ============ -->
+<section class="item-alt">
+  <div class="item reverse">
+    <div class="item-visual reveal">
+      <svg class="svg-animate" viewBox="-140 -200 280 380" id="amp-svg">
+
+        <!-- Body of ampule (everything below the snap point): rounded shoulders narrowing into a neck stub -->
+        <g class="amp-body">
+          <path d="M -28 90 L -28 -45 C -28 -65 -16 -75 -8 -78 L -8 -85 L 8 -85 L 8 -78 C 16 -75 28 -65 28 -45 L 28 90 Z"
+            fill="#F5DCE4" stroke="#9C5F73" stroke-width="2.5" stroke-linejoin="round"/>
+        </g>
+
+        <!-- Snap line indicator -->
+        <line class="snap-line" x1="-18" y1="-85" x2="18" y2="-85"
+          stroke="#9C5F73" stroke-width="1.5" stroke-dasharray="6 3"/>
+
+        <!-- Top of ampule (snaps off): narrow neck expanding into a rounded bulb head -->
+        <g class="amp-top">
+          <path d="M -8 -85 L -8 -95 C -16 -97 -22 -107 -22 -118 L -22 -132 C -22 -140 -16 -142 -10 -142 L 10 -142 C 16 -142 22 -140 22 -132 L 22 -118 C 22 -107 16 -97 8 -95 L 8 -85 Z"
+            fill="#F5DCE4" stroke="#9C5F73" stroke-width="2.5" stroke-linejoin="round"/>
+        </g>
+
+        <!-- Labels -->
+        <text x="35" y="-82" font-family="Sora" font-size="9" fill="#786166" letter-spacing="1">SNAP POINT</text>
+        <line class="tick" x1="22" y1="-85" x2="32" y2="-85" stroke="#9C5F73" stroke-width="0.8"/>
+
+        <text x="40" y="15" font-family="Sora" font-size="9" fill="#786166" letter-spacing="1">GRIP</text>
+        <line class="tick" x1="30" y1="12" x2="38" y2="12" stroke="#9C5F73" stroke-width="0.8"/>
+      </svg>
+    </div>
+    <div>
+      <div class="section-eyebrow reveal"><span class="num">no. 3</span> · The Practice Ampule</div>
+      <h2 class="reveal reveal-delay-1">A <span class="accent">plastic dummy</span> for the snap.</h2>
+      <p class="lede reveal reveal-delay-2">PLA, printed to roughly match the snap force of real glass. Use it to practice the technique before doing it for real, at 11pm on a Tuesday, with no skin to spare.</p>
+      <p class="body reveal reveal-delay-3">Most people get their first real ampule wrong in one of two ways. Too gentle, and nothing happens. Too enthusiastic, and you find out the inside of a snapped ampule is sharp. I went with option two. With one of these, you can snap it, bin it, print another, and quietly build the muscle memory: the angle, the pressure, and getting used to the sound without flinching.</p>
+      <div class="pull reveal reveal-delay-3">
+        <span class="label">On use</span>
+        Two fingers each side of the neck, thumbs together, push outward with even pressure. The snap is sharper than you expect. It always is.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CODA ============ -->
+<section class="coda" id="use">
+  <h2 class="reveal">If your nurse gave you a set, they're <em>yours to keep.</em></h2>
+  <p class="reveal reveal-delay-1">If anything breaks, gets lost, or you would like a spare, just ask. They cost almost nothing in filament and the printer does not mind. The goal is to take one small thing off the pile.</p>
+  <div class="sig reveal reveal-delay-2">from a parent who has, indeed, been there</div>
+</section>
+
+<footer>
+  <div class="left">For TPN families and the nurses who care for them</div>
+  <div class="right">3D-printed in <em>PLA</em></div>
+</footer>
+
+<script>
+  // Sticky nav state
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 30);
+  });
+
+  // Scroll-triggered reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal, .svg-animate').forEach(el => io.observe(el));
+
+  // Also reveal the stand-fill paths when their svg-animate ancestor enters view
+  const standIo = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.stand-fill, .amp-body').forEach(el => el.classList.add('visible'));
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.svg-animate').forEach(el => standIo.observe(el));
+</script>
+
+</body>
+</html>
