@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Small prints for a hard routines</title>
+<title>Small prints for a hard routine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,30..100&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -394,6 +394,133 @@
     font-size: 1.05rem;
   }
 
+  /* ============ REQUEST FORM ============ */
+  .request {
+    padding: 7rem 2rem;
+    background: var(--cream-deep);
+    border-top: 1px solid var(--rule);
+    position: relative;
+    z-index: 2;
+  }
+  .request-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .request h2 {
+    font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+    margin-bottom: 1.4rem;
+    color: var(--ink);
+  }
+  .request h2 .accent { color: var(--mulberry); font-style: italic; }
+  .request p.lede {
+    font-family: 'Fraunces', serif;
+    font-weight: 320;
+    font-size: 1.18rem;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 3rem;
+  }
+
+  .request-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem;
+  }
+  .field { display: flex; flex-direction: column; }
+  .field > label, .field > legend {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--mulberry);
+    font-weight: 500;
+    margin-bottom: 0.7rem;
+    padding: 0;
+  }
+  .field input, .field textarea {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--rule);
+    padding: 0.5rem 0;
+    transition: border-color 0.25s;
+    width: 100%;
+  }
+  .field input:focus, .field textarea:focus {
+    outline: none;
+    border-bottom-color: var(--mulberry);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 5rem;
+    font-family: 'Fraunces', serif;
+    font-weight: 320;
+  }
+  .check-group {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  .check-group .checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.8rem;
+  }
+  .check-group .check {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.4rem 0;
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    cursor: pointer;
+    font-weight: 320;
+  }
+  .check-group .check input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--mulberry);
+    cursor: pointer;
+  }
+  .submit-btn {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+    padding: 0.95rem 2.4rem;
+    background: var(--mulberry);
+    color: var(--cream);
+    font-family: 'Sora', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.25s, transform 0.15s;
+  }
+  .submit-btn:hover { background: var(--plum); }
+  .submit-btn:active { transform: translateY(1px); }
+  .form-note {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    margin-top: -0.2rem;
+  }
+
+  @media (max-width: 600px) {
+    .field-row { grid-template-columns: 1fr; }
+    .request { padding: 4rem 1.4rem; }
+  }
+
   /* ============ FOOTER ============ */
   footer {
     background: var(--ink);
@@ -520,7 +647,7 @@
   <ul>
     <li><a href="#story">The story</a></li>
     <li><a href="#hook">The aids</a></li>
-    <li><a href="#use">On use</a></li>
+    <li><a href="#request">Request</a></li>
   </ul>
 </nav>
 
@@ -719,11 +846,50 @@
   </div>
 </section>
 
+<!-- ============ REQUEST FORM ============ -->
+<section class="request" id="request">
+  <div class="request-inner">
+    <div class="section-eyebrow reveal"><span class="num">iv.</span> A spare</div>
+    <h2 class="reveal reveal-delay-1">Need a <span class="accent">replacement?</span></h2>
+    <p class="lede reveal reveal-delay-2">Broken, lost, or you would like a backup before the original gives up. Fill this in and I will print you another.</p>
+
+    <form id="request-form" class="request-form reveal reveal-delay-2" novalidate>
+      <div class="field-row">
+        <div class="field">
+          <label for="r-name">Your name</label>
+          <input id="r-name" type="text" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="r-email">Email</label>
+          <input id="r-email" type="email" required autocomplete="email">
+        </div>
+      </div>
+
+      <fieldset class="field check-group">
+        <legend>Which prints?</legend>
+        <div class="checks">
+          <label class="check"><input type="checkbox" value="The hook"><span>The hook</span></label>
+          <label class="check"><input type="checkbox" value="The stand"><span>The stand</span></label>
+          <label class="check"><input type="checkbox" value="The practice ampule"><span>The practice ampule</span></label>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="r-notes">Anything else?</label>
+        <textarea id="r-notes" rows="4" placeholder="A postal address if you would like them sent, or just a hello."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Send request</button>
+      <p class="form-note">This will open your email app with everything filled in. Hit send and I will get back to you.</p>
+    </form>
+  </div>
+</section>
+
 <!-- ============ CODA ============ -->
 <section class="coda" id="use">
   <h2 class="reveal">If your nurse gave you a set, they're <em>yours to keep.</em></h2>
   <p class="reveal reveal-delay-1">If anything breaks, gets lost, or you would like a spare, just ask. They cost almost nothing in filament and the printer does not mind. The goal is to take one small thing off the pile.</p>
-  <div class="sig reveal reveal-delay-2">from a parent who has, indeed, been there</div>
+  <div class="sig reveal reveal-delay-2">Nathan, Eloise's dad</div>
 </section>
 
 <footer>
@@ -758,6 +924,39 @@
     });
   }, { threshold: 0.2 });
   document.querySelectorAll('.svg-animate').forEach(el => standIo.observe(el));
+
+  // Request form: build a mailto: with the form contents
+  const requestForm = document.getElementById('request-form');
+  if (requestForm) {
+    requestForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('r-name').value.trim();
+      const email = document.getElementById('r-email').value.trim();
+      const prints = [...requestForm.querySelectorAll('.check-group input[type=checkbox]:checked')].map(c => c.value);
+      const notes = document.getElementById('r-notes').value.trim();
+
+      if (!name || !email) {
+        alert('A name and email would help. Otherwise I have no way to get back to you.');
+        return;
+      }
+
+      const subject = 'Replacement request from ' + name;
+      const body = [
+        'Hi Nathan,',
+        '',
+        'I would like a replacement for: ' + (prints.length ? prints.join(', ') : '(not specified)'),
+        '',
+        'Name: ' + name,
+        'Reply to: ' + email,
+        '',
+        notes ? 'Notes:\n' + notes : ''
+      ].filter(Boolean).join('\n');
+
+      // CHANGE THE EMAIL BELOW to where you want requests to land
+      const TO = 'YOUR_EMAIL_HERE@example.com';
+      window.location.href = 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    });
+  }
 </script>
 
 </body>
