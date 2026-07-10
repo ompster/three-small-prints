@@ -853,34 +853,39 @@
     <h2 class="reveal reveal-delay-1">Need a <span class="accent">replacement?</span></h2>
     <p class="lede reveal reveal-delay-2">Broken, lost, or you would like a backup before the original gives up. Fill this in and I will print you another.</p>
 
-    <form id="request-form" class="request-form reveal reveal-delay-2" novalidate>
+    <div id="form-success" style="display: none; text-align: center; padding: 2rem 0;">
+      <h2 style="color: var(--mulberry);">Request received</h2>
+      <p class="lede">Thanks — I'll get back to you within a day or two.</p>
+    </div>
+
+    <form id="request-form" class="request-form reveal reveal-delay-2" action="submit.php" method="POST">
       <div class="field-row">
         <div class="field">
           <label for="r-name">Your name</label>
-          <input id="r-name" type="text" required autocomplete="name">
+          <input id="r-name" name="name" type="text" required autocomplete="name">
         </div>
         <div class="field">
           <label for="r-email">Email</label>
-          <input id="r-email" type="email" required autocomplete="email">
+          <input id="r-email" name="email" type="email" required autocomplete="email">
         </div>
       </div>
 
       <fieldset class="field check-group">
         <legend>Which prints?</legend>
         <div class="checks">
-          <label class="check"><input type="checkbox" value="The hook"><span>The hook</span></label>
-          <label class="check"><input type="checkbox" value="The stand"><span>The stand</span></label>
-          <label class="check"><input type="checkbox" value="The practice ampule"><span>The practice ampule</span></label>
+          <label class="check"><input type="checkbox" name="prints[]" value="The hook"><span>The hook</span></label>
+          <label class="check"><input type="checkbox" name="prints[]" value="The stand"><span>The stand</span></label>
+          <label class="check"><input type="checkbox" name="prints[]" value="The practice ampule"><span>The practice ampule</span></label>
         </div>
       </fieldset>
 
       <div class="field">
         <label for="r-notes">Anything else?</label>
-        <textarea id="r-notes" rows="4" placeholder="A postal address if you would like them sent, or just a hello."></textarea>
+        <textarea id="r-notes" name="notes" rows="4" placeholder="A postal address if you would like them sent, or just a hello."></textarea>
       </div>
 
       <button type="submit" class="submit-btn">Send request</button>
-      <p class="form-note">This will open your email app with everything filled in. Hit send and I will get back to you.</p>
+      <p class="form-note">I'll get back to you within a day or two.</p>
     </form>
   </div>
 </section>
@@ -898,6 +903,14 @@
 </footer>
 
 <script>
+  // Show success message if redirected back after submission
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('submitted') === '1') {
+    document.getElementById('request-form').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
   // Sticky nav state
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
@@ -924,39 +937,6 @@
     });
   }, { threshold: 0.2 });
   document.querySelectorAll('.svg-animate').forEach(el => standIo.observe(el));
-
-  // Request form: build a mailto: with the form contents
-  const requestForm = document.getElementById('request-form');
-  if (requestForm) {
-    requestForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('r-name').value.trim();
-      const email = document.getElementById('r-email').value.trim();
-      const prints = [...requestForm.querySelectorAll('.check-group input[type=checkbox]:checked')].map(c => c.value);
-      const notes = document.getElementById('r-notes').value.trim();
-
-      if (!name || !email) {
-        alert('A name and email would help. Otherwise I have no way to get back to you.');
-        return;
-      }
-
-      const subject = 'Replacement request from ' + name;
-      const body = [
-        'Hi Nathan,',
-        '',
-        'I would like a replacement for: ' + (prints.length ? prints.join(', ') : '(not specified)'),
-        '',
-        'Name: ' + name,
-        'Reply to: ' + email,
-        '',
-        notes ? 'Notes:\n' + notes : ''
-      ].filter(Boolean).join('\n');
-
-      // CHANGE THE EMAIL BELOW to where you want requests to land
-      const TO = 'nathan.ash@gmail.com';
-      window.location.href = 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-    });
-  }
 </script>
 
 </body>
