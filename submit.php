@@ -48,8 +48,8 @@ $headers .= "Reply-To: {$email}\r\n";
 $headers .= "X-Mailer: PHP/" . phpversion();
 
 if (mail('nathan.ash@gmail.com', $subject, $body, $headers)) {
-    // Success - redirect with thank you
-    header('Location: /three-small-prints/?submitted=1');
+    // Success - redirect with thank you, scroll to form section
+    header('Location: /three-small-prints/?submitted=1#request');
     exit;
 } else {
     http_response_code(500);
