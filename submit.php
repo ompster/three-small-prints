@@ -43,7 +43,7 @@ if ($notes) {
 $body .= "\n--\nThree Small Prints\nhttps://ompster.github.io/three-small-prints";
 
 // Send email
-$headers = "From: Three Small Prints <noreply@yourdomain.com>\r\n";
+$headers = "From: Three Small Prints <n.ash@voonix.com.au>\r\n";
 $headers .= "Reply-To: {$email}\r\n";
 $headers .= "X-Mailer: PHP/" . phpversion();
 
