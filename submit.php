@@ -40,7 +40,7 @@ if ($notes) {
     $body .= "\nNotes:\n{$notes}\n";
 }
 
-$body .= "\n--\nThree Small Prints\nhttps://ompster.github.io/three-small-prints";
+$body .= "\n--\nThree Small Prints\nhttps://careprints.online";
 
 // Send email
 $headers = "From: Three Small Prints <n.ash@voonix.com.au>\r\n";
