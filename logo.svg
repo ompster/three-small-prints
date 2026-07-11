@@ -1,0 +1,64 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for depth -->
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E5B3C2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9C5F73;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Soft glow -->
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="#F5DCE4" opacity="0.3"/>
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#E5B3C2" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Three Small Prints - arranged in a triangle/circle formation -->
+  
+  <!-- 1. S-Hook (top) -->
+  <g transform="translate(256, 140)" filter="url(#softGlow)">
+    <path d="M 0,-40 Q 25,-40 25,-15 Q 25,10 0,10 Q -25,10 -25,-15 Q -25,-40 0,-40" 
+          fill="none" stroke="url(#logoGradient)" stroke-width="14" stroke-linecap="round"
+          transform="rotate(0)"/>
+    <circle cx="0" cy="-40" r="6" fill="#9C5F73"/>
+  </g>
+  
+  <!-- 2. Weighted Stand (bottom left) -->
+  <g transform="translate(180, 320)" filter="url(#softGlow)">
+    <!-- Dome base -->
+    <path d="M -35,40 L -35,30 L -25,15 L -10,5 L 0,0 L 10,5 L 25,15 L 35,30 L 35,40 Z" 
+          fill="url(#logoGradient)" stroke="#9C5F73" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Center hole -->
+    <ellipse cx="0" cy="15" rx="12" ry="8" fill="#F5DCE4" stroke="#9C5F73" stroke-width="1.5"/>
+  </g>
+  
+  <!-- 3. Practice Ampule (bottom right) -->
+  <g transform="translate(332, 320)" filter="url(#softGlow)">
+    <!-- Ampule body -->
+    <path d="M -18,45 L -18,-20 C -18,-35 -10,-42 -5,-45 L -5,-52 L 5,-52 L 5,-45 C 10,-42 18,-35 18,-20 L 18,45 Z" 
+          fill="url(#logoGradient)" stroke="#9C5F73" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Snap line -->
+    <line x1="-18" y1="-40" x2="18" y2="-40" stroke="#F5DCE4" stroke-width="2" stroke-dasharray="4 3"/>
+    <!-- Fill level -->
+    <rect x="-14" y="-10" width="28" height="35" fill="#F5DCE4" opacity="0.4" rx="2"/>
+  </g>
+  
+  <!-- Connecting subtle lines (unity/care) -->
+  <g opacity="0.2">
+    <line x1="256" y1="180" x2="180" y2="280" stroke="#9C5F73" stroke-width="1.5" stroke-dasharray="5 5"/>
+    <line x1="256" y1="180" x2="332" y2="280" stroke="#9C5F73" stroke-width="1.5" stroke-dasharray="5 5"/>
+    <line x1="180" y1="280" x2="332" y2="280" stroke="#9C5F73" stroke-width="1.5" stroke-dasharray="5 5"/>
+  </g>
+  
+  <!-- Center accent - heart/care symbol -->
+  <circle cx="256" cy="256" r="18" fill="#9C5F73" opacity="0.15"/>
+  <path d="M 256,248 C 256,248 252,244 252,242 C 252,240 254,238 256,240 C 258,238 260,240 260,242 C 260,244 256,248 256,248" 
+        fill="#9C5F73" opacity="0.6"/>
+</svg>
